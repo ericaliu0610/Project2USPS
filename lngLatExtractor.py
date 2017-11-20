@@ -33,7 +33,7 @@ def extractLngLatTraj(trajList):
         lngLat = searchLngLat(eventZipCode)
 
         if lngLat is None:
-            print "Didn't find correct lnglat for zip code: " + eventZipCode
+            print("Didn't find correct lnglat for zip code: " + eventZipCode)
         trajTimeLngLat.append([trajList[i]["EventDate"], trajList[i]["EventTime"], lngLat])
 
     return trajTimeLngLat

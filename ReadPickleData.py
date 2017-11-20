@@ -4,18 +4,17 @@
 import pickle
 import os
 
-file_des = os.path.join(os.path.dirname(__file__) , "origin_0000000_0096669.pkl")
+file_des = os.path.join(os.path.dirname(__file__), "origin_0000000_0096669.pkl")
 
-print os.path.dirname(__file__)
+print(os.path.dirname(__file__))
 
 tracking_dict_list = []
 
 with open(file_des, "rb") as f:
-
     while 1:
         try:
             tracking_dict_list.append(pickle.load(f))
         except EOFError:
             break
 
-print len(tracking_dict_list), tracking_dict_list[100]
+print(len(tracking_dict_list), tracking_dict_list[100])

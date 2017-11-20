@@ -1,7 +1,8 @@
 import urllib
-#import urllib2
+# import urllib2
 import xmltodict
 import config as cfg
+
 
 # trackNum number exmaple : "9405510200883557547244"
 # reference : https://www.usps.com/business/web-tools-apis/track-and-confirm-api.htm
@@ -40,7 +41,7 @@ def sendRequest(trackNum):
             print("Invalid tracking #: " + str(trackNum))
             return {}
 
-    except urllib.URLError as e:
+    except urllib.error.URLError as e:
 
         print(type(e))
         return {}
@@ -49,6 +50,3 @@ def sendRequest(trackNum):
 
         print(type(e))
         return {}
-
-
-

@@ -2,6 +2,8 @@ from XMLGetter import sendRequest
 from GenCheckDigit import gen_check_digit
 import pickle
 import time
+import random
+
 
 def fetchContinuData(pre_serial, tra_start, tra_end, file_des):
     '''
@@ -16,18 +18,24 @@ def fetchContinuData(pre_serial, tra_start, tra_end, file_des):
     with open(file_des, "ab") as f:
 
         id = 1
-        for i in range(tra_start, tra_end + 1):
-            package_ic = str(pre_serial) + str(i).zfill(7)
-            package_ic += gen_check_digit(package_ic)
-            tracking_dict = sendRequest(package_ic)
-            time.sleep(0.05)
+        if tra_start % 100000 != 0 or tra_end % 100000 != 99999:
+            print("Plz input trajectory start and end id numbers in the format like 1100000, 1299999")
+            exit()
+        else:
+            batch_num = int((tra_end + 1 - tra_start) / 100000)
+            for batch in range(batch_num):
+                sample_id = random.sample(range(100000), 3000)
+                for i in sample_id:
+                    package_ic = str(pre_serial) + str(tra_start+batch*100000 + i).zfill(7)
+                    package_ic += gen_check_digit(package_ic)
+                    tracking_dict = sendRequest(package_ic)
+                    time.sleep(0.05)
 
-            if 'TrackDetail' in tracking_dict.keys():
-                pickle.dump(tracking_dict, f)
-                print("valid tracking # " + str(id) + ": " + package_ic + " has been fetched")
-                id += 1
-            # else :
-            #     print "No info for tracking #: " + package_ic
-
+                    if 'TrackDetail' in tracking_dict.keys():
+                        pickle.dump(tracking_dict, f)
+                        print("valid tracking # " + str(id) + ": " + package_ic + " has been fetched")
+                        id += 1
+                        # else :
+                        #     print "No info for tracking #: " + package_ic
 
     print("The process is finished!")
